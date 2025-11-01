@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics & Electronics Level 2 Final Exam</title>
+    <!-- Load Tailwind CSS for modern/responsive styling of the login page -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* --- CBT UI Custom Styles (Added for the test interface) --- */
+        .test-header {
+            background-color: #ffffff;
+            padding: 12px 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .timer-box {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #007bff; /* Blue for high visibility */
+            background-color: #e9f7ff;
+            padding: 5px 15px;
+            border-radius: 8px;
+            border: 1px solid #007bff;
+        }
+
+        .main-content {
+            display: flex;
+            padding: 20px;
+            max-width: 1300px;
+            margin: 20px auto;
+        }
+
+        .question-panel {
+            flex: 3;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            margin-right: 20px;
+            min-height: 700px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-header {
+            font-size: 1.6em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #f0f0f0;
+            padding-bottom: 10px;
+            color: #007bff;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            flex-grow: 1;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            user-select: none;
+        }
+
+        .option-item:hover {
+            background-color: #f9f9f9;
+            border-color: #b3d9ff;
+        }
+
+        .option-item input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.3);
+            accent-color: #007bff;
+        }
+
+        .selected-option {
+            background-color: #e6f7ff;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .text-answer-container {
+            flex-grow: 1;
+            padding-top: 10px;
+        }
+
+        .text-answer-container textarea {
+            width: 100%;
+            height: 250px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            resize: vertical;
+        }
+
+        .navigation-panel {
+            flex: 1;
+            max-width: 300px;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        }
+
+        .status-legend {
+            background-color: #f7f9fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .legend-item {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 10px;
+            vertical-align: middle;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .legend-color.visited { background-color: #28a745; }
+        .legend-color.not-answered { background-color: #dc3545; }
+        .legend-color.not-visited { background-color: #adb5bd; }
+        .legend-color.marked-review { background-color: #ffc107; color: #333; }
+        .legend-color.answered-marked { background-color: #6f42c1; }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .q-link {
+            padding: 10px 5px;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.1s, box-shadow 0.1s;
+            background-color: #adb5bd;
+            color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .q-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        /* Question Status Classes for Palette Links (White text for color contrast) */
+        .q-status-not-answered { background-color: #dc3545; }
+        .q-status-answered { background-color: #28a745; }
+        .q-status-marked { background-color: #ffc107; color: #333; }
+        .q-status-answered-marked { background-color: #6f42c1; }
+
+        .q-link-current {
+            border: 3px solid #000000;
+            transform: scale(1.1);
+        }
+
+        .action-buttons {
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .action-buttons button {
+            padding: 12px 18px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            margin: 0 5px;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .action-buttons button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-save-next { background-color: #007bff; color: white; }
+        .btn-save-next:hover { background-color: #0056b3; }
+
+        .btn-mark-review { background-color: #ffc107; color: #333; }
+        .btn-mark-review:hover { background-color: #e0a800; }
+
+        .btn-clear { background-color: #f8f9fa; color: #333; border: 1px solid #ced4da; }
+        .btn-clear:hover { background-color: #e9ecef; }
+        
+        .btn-nav-back, .btn-nav-next { background-color: #6c757d; color: white; }
+        .btn-nav-back:hover, .btn-nav-next:hover { background-color: #5a6268; }
+
+        .btn-submit { background-color: #28a745; color: white; }
+        .btn-submit:hover { background-color: #1e7e34; }
+        
+        /* Result Screen */
+        .result-screen {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            background-color: #fff;
+            margin: 50px auto;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-top: 5px solid #007bff;
+        }
+
+        /* Modal for Confirmation/Alerts */
+        .custom-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+                padding: 10px;
+            }
+            .question-panel {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            .navigation-panel {
+                max-width: 100%;
+            }
+            .palette-grid {
+                grid-template-columns: repeat(8, 1fr);
+            }
+            .action-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .action-buttons button {
+                margin: 5px;
+                flex-basis: 45%;
+            }
+            .action-buttons > div {
+                display: flex;
+                flex-basis: 100%;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- 1. LOGIN INTERFACE (Visible by default) -->
+    <div id="login-container" class="w-full max-w-md bg-white p-8 md:p-10 shadow-2xl rounded-xl transition-all duration-300">
+
+        <!-- Logo Section - NOW BIGGER (h-16) -->
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <!-- Reference for logo.png (The main organization logo) -->
+            <img 
+                src="logo.png" 
+                alt="Organization Logo" 
+                class="h-16 w-auto rounded-md"
+            >
+            <!-- Reference for logo1.png (The exam-specific or secondary logo) -->
+            <img 
+                src="logo1.png" 
+                alt="Exam Logo" 
+                class="h-16 w-16 rounded-full shadow-lg"
+            >
+        </div>
+        
+        <header class="text-center mb-8">
+            <h1 class="text-xl font-bold text-gray-800 tracking-tight md:text-2xl">
+                Robotics & Electronics
+            </h1>
+            <h2 class="text-3xl font-extrabold text-indigo-600 mt-1 md:text-4xl">
+                Level 2 Final Exam
+            </h2>
+            <p class="text-sm text-gray-500 mt-2">
+                Please enter your details to begin the test.
+            </p>
+        </header>
+
+        <form id="loginForm" class="space-y-6">
+            
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    required 
+                    placeholder="e.g., Alex Johnson"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+                >
+            </div>
+
+            <div>
+                <label for="rollNo" class="block text-sm font-medium text-gray-700 mb-1">Roll Number</label>
+                <input 
+                    type="text" 
+                    id="rollNo" 
+                    name="rollNo" 
+                    required 
+                    placeholder="e.g., RNE2024001"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+                >
+            </div>
+
+            <button 
+                type="submit" 
+                id="enterTestButton"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-[1.01] active:scale-[0.99]"
+            >
+                Enter Test
+            </button>
+
+            <!-- Message box for feedback -->
+            <div id="messageBox" class="hidden mt-4 p-3 rounded-lg text-sm" role="alert"></div>
+
+        </form>
+
+    </div>
+    
+    <!-- 2. CBT TEST PLATFORM (Hidden by default) -->
+    <!-- This container holds the scrolling header and the main content -->
+    <div id="test-platform-container" class="hidden w-full h-full p-0">
+        <!-- The body margin and padding must be adjusted when this is visible -->
+        <div class="test-header">
+            <span style="font-size: 1.2em; font-weight: bold; color: #333;">Robotics & Electronics Level 2 Final Exam (50 Qs)</span>
+            <div class="timer-box">Remaining Time: <span id="time-display">01:00:00</span></div>
+        </div>
+
+        <div class="main-content">
+            <!-- Question Panel -->
+            <div class="question-panel" id="question-panel">
+                <div class="question-header">Question <span id="current-q-number">1</span>:</div>
+                <div class="question-text" id="question-text"></div>
+                
+                <!-- Options or Text Area injected here -->
+                <ul class="options-list" id="options-list">
+                    <!-- Content injected here -->
+                </ul>
+                
+                <div class="action-buttons">
+                    <div>
+                        <button id="nav-back-btn" class="btn-nav-back">&lt;&lt; BACK</button>
+                        <button id="nav-next-btn" class="btn-nav-next">NEXT &gt;&gt;</button>
+                    </div>
+                    <div style="flex-grow: 1; text-align: center;">
+                        <button id="save-next-btn" class="btn-save-next">SAVE & NEXT</button>
+                        <button id="clear-btn" class="btn-clear">CLEAR RESPONSE</button>
+                        <button id="mark-review-btn" class="btn-mark-review">MARK FOR REVIEW & NEXT</button>
+                    </div>
+                    <button id="submit-btn" class="btn-submit">SUBMIT TEST</button>
+                </div>
+            </div>
+            
+            <!-- Navigation Panel (Question Palette) -->
+            <div class="navigation-panel">
+                <h4 style="margin-top: 0; color: #007bff;">Question Palette</h4>
+                
+                <div class="status-legend">
+                    <div class="legend-item"><span class="legend-color not-visited">0</span> Not Visited</div>
+                    <div class="legend-item"><span class="legend-color not-answered">0</span> Not Answered</div>
+                    <div class="legend-item"><span class="legend-color visited">0</span> Answered</div>
+                    <div class="legend-item"><span class="legend-color marked-review">0</span> Marked for Review</div>
+                    <div class="legend-item"><span class="legend-color answered-marked">0</span> Answered & Marked</div>
+                </div>
+
+                <div class="palette-grid" id="palette-grid">
+                    <!-- Question links injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 3. RESULT SCREEN (MOVED OUTSIDE test-platform-container for independent display) -->
+    <div class="result-screen" id="result-screen">
+        <!-- Results will be displayed here -->
+    </div>
+
+    <!-- Custom Modal for Confirmation/Alerts (Outside main containers) -->
+    <div id="custom-modal" class="custom-modal">
+        <div class="modal-content">
+            <h4 id="modal-title"></h4>
+            <p id="modal-message"></p>
+            <div class="modal-buttons">
+                <button id="modal-confirm-btn" class="btn-save-next" style="display: none;">Confirm</button>
+                <button id="modal-cancel-btn" class="btn-clear" style="display: none;">Cancel</button>
+                <button id="modal-ok-btn" class="btn-save-next" style="display: none;">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- CBT DATA (50 Questions) ---
+        const quizQuestions = [
+            // Section A (10 MCQs - 2 options)
+            { id: 1, q: "Robotics is mainly a combination of which fields?", options: ["Mechanics & Electronics", "Biology & Economics"], ans: "Mechanics & Electronics" },
+            { id: 2, q: "Which statement is true?", options: ["A robot follows programmed instructions", "A robot acts randomly"], ans: "A robot follows programmed instructions" },
+            { id: 3, q: "Ethics in robotics mainly ensures", options: ["Robots are safe for humans", "Robots can replace humans completely"], ans: "Robots are safe for humans" },
+            { id: 4, q: "Arduino Uno operates on", options: ["5V logic", "12V logic"], ans: "5V logic" },
+            { id: 5, q: "RX pin is used for", options: ["Receiving data", "Transmitting data"], ans: "Receiving data" },
+            { id: 6, q: "An analog pin reads", options: ["Continuous range values", "Only 0 or 1"], ans: "Continuous range values" },
+            { id: 7, q: "Python is", options: ["High-level language", "Low-level hardware language"], ans: "High-level language" },
+            { id: 8, q: "LDR value decreases when", options: ["Light increases", "Light decreases"], ans: "Light increases" },
+            { id: 9, q: "A transistor can act as", options: ["Switch or amplifier", "Battery"], ans: "Switch or amplifier" },
+            { id: 10, q: "Relay is used to", options: ["Control high power using low power", "Read sensor values"], ans: "Control high power using low power" },
+
+            // Section B (30 MCQs - 4 options)
+            { id: 11, q: "Arduino Uno is based on which MCU?", options: ["ATmega328P", "ESP32", "PIC16F877", "STM32"], ans: "ATmega328P" },
+            { id: 12, q: "Which pin supports PWM on Arduino Uno?", options: ["Pin 3", "Pin 5", "Pin 6", "All above (Pins 3, 5, 6, 9, 10, 11)"], ans: "All above (Pins 3, 5, 6, 9, 10, 11)" },
+            { id: 13, q: "Serial.begin(9600) means", options: ["Start serial comm at 9600 baud", "Print text once", "Delay by 9600 ms", "Stop communication"], ans: "Start serial comm at 9600 baud" },
+            { id: 14, q: "DigitalWrite(LED_PIN, HIGH) means", options: ["Turn LED ON", "Turn LED OFF", "Blink LED", "Read LED state"], ans: "Turn LED ON" },
+            { id: 15, q: "LDR stands for", options: ["Light Dependent Resistor", "Low Data Reader", "Laser Detect Receiver", "Light Digital Reader"], ans: "Light Dependent Resistor" },
+            { id: 16, q: "Analog range in Arduino Uno (10-bit ADC)", options: ["0–1023", "0–255", "0–1", "−1023 to +1023"], ans: "0–1023" },
+            { id: 17, q: "Which converts AC to DC?", options: ["Diode", "Capacitor", "Resistor", "Inductor"], ans: "Diode" },
+            { id: 18, q: "EEPROM in Arduino stores", options: ["Permanent data (retains data when power is off)", "Temporary data", "Power supply", "Clock signal"], ans: "Permanent data (retains data when power is off)" },
+            { id: 19, q: "Which communication does I2C use?", options: ["SDA & SCL (Data and Clock)", "RX & TX", "MOSI & MISO", "Vcc & GND"], ans: "SDA & SCL (Data and Clock)" },
+            { id: 20, q: "Relay input signal normally", options: ["5V (from MCU logic)", "230V", "12V", "Analog signal"], ans: "5V (from MCU logic)" },
+            { id: 21, q: "Infrared sensor primarily detects", options: ["Motion / Object (via reflection)", "Temperature", "Humidity", "Sound"], ans: "Motion / Object (via reflection)" },
+            { id: 22, q: "Serial.print() does", options: ["Print without new line", "Print with new line", "Start analog read", "Stop program"], ans: "Print without new line" },
+            { id: 23, q: "Python list is enclosed in", options: ["[]", "{}", "()", "<>"], ans: "[]" },
+            { id: 24, q: "Python string example", options: ["\"Hello\"", "100", "True", "3.14"], ans: "\"Hello\"" },
+            { id: 25, q: "Arduino default clock frequency", options: ["16 MHz", "8 MHz", "1 GHz", "100 kHz"], ans: "16 MHz" },
+            { id: 26, q: "LDR sensor type", options: ["Analog (resistance changes continuously)", "Digital", "Capacitive", "Ultrasonic"], ans: "Analog (resistance changes continuously)" },
+            { id: 27, q: "Material commonly used in resistors", options: ["Carbon film", "Copper sheet", "Plastic", "Wood"], ans: "Carbon film" },
+            { id: 28, q: "Motor driver IC example", options: ["L298N", "7805", "LM358", "NE555"], ans: "L298N" },
+            { id: 29, q: "Relay types", options: ["SPDT & DPDT (Single/Double Pole, Double Throw)", "NPN/PNP", "AC/DC", "Resistive/Capacitive"], ans: "SPDT & DPDT (Single/Double Pole, Double Throw)" },
+            { id: 30, q: "Which language Arduino uses?", options: ["C/C++ based", "Java", "HTML", "PHP"], ans: "C/C++ based" },
+            { id: 31, q: "analogRead(A0) returns", options: ["0–1023", "0–255", "1 or 0", "True/False"], ans: "0–1023" },
+            { id: 32, q: "Python integer example", options: ["25", "\"25\"", "2.5", "[25]"], ans: "25" },
+            { id: 33, q: "TX pin used for", options: ["Transmitting data", "Temperature sense", "Time delay", "LCD control"], ans: "Transmitting data" },
+            { id: 34, q: "// operator in Python", options: ["Floor division (integer division)", "Normal division", "Power", "Modulus"], ans: "Floor division (integer division)" },
+            { id: 35, q: "ESP32 has", options: ["Wi-Fi & Bluetooth", "Only Bluetooth", "Only Wi-Fi", "No wireless"], ans: "Wi-Fi & Bluetooth" },
+            { id: 36, q: "IR sensor mainly works based on", options: ["IR light reflection", "Sound waves", "Heat sensing", "Pressure"], ans: "IR light reflection" },
+            { id: 37, q: "Analog output pin in Arduino", options: ["PWM pins (like 3,5,6,9,10,11)", "A0–A5", "RX/TX", "VIN"], ans: "PWM pins (like 3,5,6,9,10,11)" },
+            { id: 38, q: "Data capacity smallest to biggest", options: ["KB < MB < GB < TB", "MB < KB < GB < TB", "GB < MB < KB < TB", "TB < GB < MB < KB"], ans: "KB < MB < GB < TB" },
+            { id: 39, q: "Microcontroller memory types", options: ["Flash, SRAM, EEPROM", "RAM, HDD, GPU", "ROM, CD, Pendrive", "SSD, RAM, HDD"], ans: "Flash, SRAM, EEPROM" },
+            { id: 40, q: "On-board LED pin in UNO", options: ["13", "10", "3", "A5"], ans: "13" },
+
+            // Section C (10 Numerical/Programming Questions - Free Text Input)
+            // Note: The correct answers are stored as strings. The comparison in submitTest will be case-insensitive and trim whitespace.
+            { id: 41, q: "Python: 5 + 3 * 2 = ? (Enter the numerical result)", options: [], ans: "11" },
+            { id: 42, q: "Python: 10 // 3 = ? (Enter the numerical result)", options: [], ans: "3" },
+            { id: 43, q: "Python: 2 ** 3 = ? (Enter the numerical result)", options: [], ans: "8" },
+            { id: 44, q: "Python: 9 % 4 = ? (Enter the numerical result)", options: [], ans: "1" },
+            { id: 45, q: "Python: 15 / 2 = ? (Enter the numerical result)", options: [], ans: "7.5" },
+            { id: 46, q: "Python: 7 - 2 * 3 = ? (Enter the numerical result)", options: [], ans: "1" },
+            { id: 47, q: "How many Acknowledgement bits would be there in 5 Packets? (Enter the numerical result)", options: [], ans: "40" },
+            { id: 48, q: "5 MB is how many KB (1 MB = 1024 KB)? (Enter the numerical result)", options: [], ans: "5120" },
+            { id: 49, q: "If relay ON = LED ON, input signal likely = ? (Enter the common logic high voltage in V, e.g., 3V or 5V)", options: [], ans: "5V" },
+            { id: 50, q: "Arduino reads 3 V on analog pin (0–5V range). Value = ? (Enter the corresponding 0–1023 value)", options: [], ans: "614" } 
+        ];
+
+        // --- CBT STATE MANAGEMENT ---
+        let currentQuestionIndex = 0;
+        const totalQuestions = quizQuestions.length;
+        // States: 0=Not Visited, 1=Not Answered, 2=Answered, 3=Marked for Review, 4=Answered & Marked
+        const questionStatus = new Array(totalQuestions).fill(0); 
+        const userSelections = new Array(totalQuestions).fill(null);
+        
+        // --- TIME CONFIG & REFERENCES ---
+        const totalTimeInSeconds = 60 * 60; // 1 Hour
+        let timeLeft = totalTimeInSeconds;
+        let timerInterval;
+
+        // Test UI references
+        const timeDisplay = document.getElementById('time-display');
+        const qNumberEl = document.getElementById('current-q-number');
+        const qTextEl = document.getElementById('question-text');
+        const optionsListEl = document.getElementById('options-list');
+        const paletteGridEl = document.getElementById('palette-grid');
+        const legendContainer = document.querySelector('.status-legend');
+        const questionPanel = document.getElementById('question-panel');
+        const resultScreen = document.getElementById('result-screen');
+        const modal = document.getElementById('custom-modal');
+        const testPlatformContainer = document.getElementById('test-platform-container');
+
+        // Modal references
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const modalOkBtn = document.getElementById('modal-ok-btn');
+        
+        const TEXT_INPUT_START_INDEX = 40; // Question 41 is index 40
+
+
+        // --- LOGIN LOGIC ---
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            const nameInput = document.getElementById('name');
+            const rollNoInput = document.getElementById('rollNo');
+            const messageBox = document.getElementById('messageBox');
+            const button = document.getElementById('enterTestButton');
+            const loginContainer = document.getElementById('login-container');
+
+            // Simple validation
+            if (nameInput.value.trim() === "" || rollNoInput.value.trim() === "") {
+                messageBox.classList.remove('hidden', 'bg-green-100', 'text-green-800');
+                messageBox.classList.add('bg-red-100', 'text-red-800');
+                messageBox.textContent = "Please fill in both your Full Name and Roll Number to proceed.";
+                return;
+            }
+
+            // Disable button and show loading state
+            button.disabled = true;
+            button.textContent = "Loading Test...";
+            button.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+            button.classList.add('bg-gray-500', 'cursor-not-allowed');
+
+            // Simulate successful authentication and transition to test
+            setTimeout(() => {
+                // 1. Hide Login UI
+                loginContainer.classList.add('hidden');
+                
+                // 2. Adjust body layout: remove centering/padding for full test display
+                document.body.classList.remove('flex', 'items-center', 'justify-center', 'p-4');
+
+                // 3. Show Test UI
+                testPlatformContainer.classList.remove('hidden');
+                
+                // 4. Initialize Test
+                loadQuestion(currentQuestionIndex);
+                startTimer();
+            }, 1000); 
+        });
+
+
+        // --- CBT CORE FUNCTIONS ---
+
+        function showModal(title, message, type = 'alert', onConfirm = null) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            
+            modalConfirmBtn.style.display = 'none';
+            modalCancelBtn.style.display = 'none';
+            modalOkBtn.style.display = 'none';
+            
+            modalConfirmBtn.onclick = null;
+            modalCancelBtn.onclick = null;
+            modalOkBtn.onclick = null;
+
+            if (type === 'confirm') {
+                modalConfirmBtn.style.display = 'inline-block';
+                modalCancelBtn.style.display = 'inline-block';
+                
+                modalConfirmBtn.onclick = () => { modal.style.display = 'none'; if (onConfirm) onConfirm(true); };
+                modalCancelBtn.onclick = () => { modal.style.display = 'none'; if (onConfirm) onConfirm(false); };
+            } else { // 'alert'
+                modalOkBtn.style.display = 'inline-block';
+                modalOkBtn.onclick = () => { modal.style.display = 'none'; if (onConfirm) onConfirm(); };
+            }
+            modal.style.display = 'flex';
+        }
+
+        function formatTime(seconds) {
+            const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+            const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+            const s = String(seconds % 60).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timeDisplay.textContent = formatTime(timeLeft);
+
+                if (timeLeft <= 300) { // Last 5 minutes
+                    timeDisplay.style.backgroundColor = '#ffc107';
+                }
+                if (timeLeft <= 60) { // Last 1 minute
+                    timeDisplay.style.backgroundColor = '#dc3545';
+                    timeDisplay.style.color = 'white';
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showModal("Time's Up!", "Your time is over. The test will be automatically submitted now.", 'alert', submitTest);
+                }
+            }, 1000);
+        }
+        
+        function updateQuestionStatus(index, action) {
+            const currentAnswer = userSelections[index];
+            const hasAnswer = currentAnswer !== null && currentAnswer.toString().trim() !== '';
+
+            if (action === 'save-next' || action === 'mark-review') {
+                if (action === 'save-next') {
+                    if (hasAnswer) {
+                        questionStatus[index] = 2; // Answered (Green)
+                    } else {
+                        questionStatus[index] = 1; // Not Answered (Red)
+                    }
+                } else if (action === 'mark-review') {
+                     if (hasAnswer) {
+                        questionStatus[index] = 4; // Answered & Marked (Purple)
+                    } else {
+                        questionStatus[index] = 3; // Marked for Review (Orange)
+                    }
+                }
+            } else if (action === 'clear') {
+                userSelections[index] = null;
+                if (questionStatus[index] === 4) {
+                    questionStatus[index] = 3;
+                } else if (questionStatus[index] === 2) {
+                    questionStatus[index] = 1;
+                }
+            } else if (questionStatus[index] === 0) {
+                // If the user simply visits, mark as Not Answered (Red)
+                questionStatus[index] = 1;
+            }
+            
+            updatePalette();
+        }
+
+        function saveSelection(index, selection) {
+            const cleanSelection = selection && index >= TEXT_INPUT_START_INDEX ? selection.toString().trim() : selection;
+            userSelections[index] = cleanSelection;
+            
+            const hasAnswer = cleanSelection !== null && cleanSelection.toString().trim() !== '';
+            const currentStatus = questionStatus[index];
+            
+            if (hasAnswer) {
+                if (currentStatus === 1 || currentStatus === 0) {
+                    questionStatus[index] = 2;
+                } else if (currentStatus === 3) {
+                    questionStatus[index] = 4;
+                }
+            } else {
+                if (currentStatus === 2 || currentStatus === 4) {
+                     questionStatus[index] = (currentStatus === 4) ? 3 : 1; 
+                }
+            }
+            
+            updatePalette();
+        }
+
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= totalQuestions) return;
+            
+            updateQuestionStatus(currentQuestionIndex, 'visit'); 
+
+            currentQuestionIndex = index;
+            
+            const qData = quizQuestions[index];
+            qNumberEl.textContent = index + 1;
+            qTextEl.textContent = qData.q;
+            optionsListEl.innerHTML = '';
+            
+            updateQuestionStatus(index, 'visit'); 
+            
+            const isTextQuestion = index >= TEXT_INPUT_START_INDEX;
+
+            if (isTextQuestion) {
+                // --- TEXT INPUT MODE ---
+                const container = document.createElement('div');
+                container.className = 'text-answer-container';
+                
+                const label = document.createElement('p');
+                label.textContent = "Your Answer (Numeric or Text)";
+                label.style.fontWeight = 'bold';
+                
+                const textarea = document.createElement('textarea');
+                textarea.id = 'text-answer-input';
+                textarea.placeholder = 'Type your answer here... (e.g., 5V or 1023)';
+                
+                if (userSelections[index] !== null) {
+                    textarea.value = userSelections[index];
+                }
+                
+                const inputHandler = () => {
+                    saveSelection(index, textarea.value);
+                };
+
+                textarea.addEventListener('input', inputHandler);
+                
+                container.appendChild(label);
+                container.appendChild(textarea);
+                optionsListEl.appendChild(container);
+                optionsListEl.style.paddingTop = '10px';
+
+            } else {
+                // --- MCQ MODE ---
+                optionsListEl.style.paddingTop = '0';
+                
+                qData.options.forEach((option, i) => {
+                    const li = document.createElement('li');
+                    
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = 'answer';
+                    radio.value = option;
+                    radio.id = `q${index}-opt${i}`;
+                    
+                    const optionText = document.createElement('span');
+                    optionText.textContent = option;
+                    optionText.style.flexGrow = '1';
+
+                    li.appendChild(radio);
+                    li.appendChild(optionText);
+
+                    if (userSelections[index] === option) {
+                        radio.checked = true;
+                        li.classList.add('selected-option');
+                    }
+
+                    const selectionHandler = () => {
+                        radio.checked = true;
+                        saveSelection(index, option);
+                        document.querySelectorAll('.option-item').forEach(item => item.classList.remove('selected-option'));
+                        li.classList.add('selected-option');
+                    };
+
+                    radio.addEventListener('change', selectionHandler);
+                    li.classList.add('option-item');
+                    li.addEventListener('click', selectionHandler);
+                    
+                    optionsListEl.appendChild(li);
+                });
+            }
+
+            updatePalette();
+        }
+        
+        function goToNextQuestion() {
+            if (currentQuestionIndex < totalQuestions - 1) {
+                loadQuestion(currentQuestionIndex + 1);
+            } else {
+                showModal("End of Test", "You have reached the last question.", 'alert');
+            }
+        }
+        
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                loadQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function updatePalette() {
+            paletteGridEl.innerHTML = ''; 
+            const counts = [0, 0, 0, 0, 0]; 
+            
+            questionStatus.forEach((status, index) => {
+                const qLink = document.createElement('div');
+                qLink.className = 'q-link';
+                qLink.textContent = index + 1;
+                qLink.onclick = () => loadQuestion(index);
+                
+                if (status === 0) counts[0]++; 
+                else if (status === 1) counts[1]++; 
+                else if (status === 2) counts[2]++; 
+                else if (status === 3) counts[3]++; 
+                else if (status === 4) counts[4]++;
+
+                if (status === 1) qLink.classList.add('q-status-not-answered');
+                else if (status === 2) qLink.classList.add('q-status-answered');
+                else if (status === 3) qLink.classList.add('q-status-marked');
+                else if (status === 4) qLink.classList.add('q-status-answered-marked');
+                
+                if (index === currentQuestionIndex) {
+                    qLink.classList.add('q-link-current');
+                }
+
+                paletteGridEl.appendChild(qLink);
+            });
+
+            // Update Legend Counts
+            legendContainer.querySelector('.not-visited').textContent = counts[0];
+            legendContainer.querySelector('.not-answered').textContent = counts[1] + counts[0]; 
+            legendContainer.querySelector('.visited').textContent = counts[2];
+            legendContainer.querySelector('.marked-review').textContent = counts[3];
+            legendContainer.querySelector('.answered-marked').textContent = counts[4];
+        }
+
+        function submitTest() {
+            clearInterval(timerInterval); 
+
+            let correct = 0;
+            let attempted = 0;
+            let markedForReview = 0;
+            
+            for (let i = 0; i < totalQuestions; i++) {
+                const selection = userSelections[i];
+                // Standardize answer for robust comparison (case-insensitive, trim whitespace)
+                const cleanAnswer = quizQuestions[i].ans.toString().trim().toLowerCase();
+                
+                if (questionStatus[i] === 3 || questionStatus[i] === 4) {
+                    markedForReview++;
+                }
+
+                if (selection !== null && selection.toString().trim() !== '') {
+                    attempted++;
+                    const cleanSelection = selection.toString().trim().toLowerCase();
+                    
+                    if (cleanSelection === cleanAnswer) {
+                        correct++;
+                    }
+                }
+            }
+            
+            // 1. Hide the entire Test Platform Container
+            testPlatformContainer.classList.add('hidden');
+            
+            // 2. Set body back to centering mode for result screen
+            document.body.classList.add('flex', 'items-center', 'justify-center', 'p-4');
+            document.body.style.backgroundColor = '#f3f4f6';
+
+
+            // 3. Show Result Screen (which is now a sibling element)
+            resultScreen.style.display = 'block';
+            
+            const studentName = document.getElementById('name').value;
+            const studentRoll = document.getElementById('rollNo').value;
+
+            // Logos added to the results screen here
+            resultScreen.innerHTML = `
+                <!-- Logo Section for Result Page (Matching Login Size) -->
+                <div class="flex justify-between items-center mb-6 border-b pb-4 mx-auto max-w-xs">
+                    <img 
+                        src="logo.png" 
+                        alt="Organization Logo" 
+                        class="h-16 w-auto rounded-md"
+                    >
+                    <img 
+                        src="logo1.png" 
+                        alt="Exam Logo" 
+                        class="h-16 w-16 rounded-full shadow-lg"
+                    >
+                </div>
+
+                <h3 class="text-3xl font-bold text-indigo-600 mb-2">Test Submission Successful!</h3>
+                <p class="text-gray-600 mb-4">Your scores are computed below.</p>
+                <hr style="margin: 20px 0;">
+                <p class="text-lg"><strong>Test Taker:</strong> ${studentName}</p>
+                <p class="text-lg"><strong>Roll No:</strong> ${studentRoll}</p>
+                <hr style="margin: 20px 0;">
+                <div class="grid grid-cols-2 gap-4 text-left p-4 bg-gray-50 rounded-lg">
+                    <p><strong>Total Questions:</strong></p> <p class="font-bold">${totalQuestions}</p>
+                    <p><strong>Attempted:</strong></p> <p class="font-bold text-blue-600">${attempted}</p>
+                    <p><strong>Not Attempted:</strong></p> <p class="font-bold text-red-600">${totalQuestions - attempted}</p>
+                    <p><strong>Time Spent:</strong></p> <p class="font-bold">${formatTime(totalTimeInSeconds - timeLeft)}</p>
+                </div>
+                <hr style="margin: 20px 0;">
+                <p style="font-size: 1.8em; font-weight: 700; color: #28a745;">
+                    <span style="font-size: 1.1em;">Correct Answers:</span> ${correct}
+                </p>
+                <p style="font-size: 2.2em; font-weight: 800; color: #007bff;">
+                    Final Score: ${((correct / totalQuestions) * 100).toFixed(2)}%
+                </p>
+                
+                <button onclick="window.location.reload()" class="btn-submit" style="margin-top: 30px;">Restart Test</button>
+            `;
+        }
+
+        // --- CBT EVENT LISTENERS ---
+        document.getElementById('save-next-btn').addEventListener('click', () => {
+            updateQuestionStatus(currentQuestionIndex, 'save-next');
+            goToNextQuestion();
+        });
+
+        document.getElementById('mark-review-btn').addEventListener('click', () => {
+            updateQuestionStatus(currentQuestionIndex, 'mark-review');
+            goToNextQuestion();
+        });
+
+        document.getElementById('clear-btn').addEventListener('click', () => {
+             showModal("Clear Response", "Are you sure you want to clear your selected/typed answer for this question?", 'confirm', (confirmed) => {
+                if (confirmed) {
+                    updateQuestionStatus(currentQuestionIndex, 'clear');
+                    loadQuestion(currentQuestionIndex); 
+                }
+            });
+        });
+        
+        document.getElementById('nav-next-btn').addEventListener('click', () => {
+            goToNextQuestion(); 
+        });
+
+        document.getElementById('nav-back-btn').addEventListener('click', () => {
+            goToPreviousQuestion();
+        });
+        
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            updateQuestionStatus(currentQuestionIndex, 'visit'); 
+            
+            const notAnsweredCount = questionStatus.filter(s => s === 0 || s === 1 || s === 3).length;
+            const message = notAnsweredCount > 0 
+                ? `You have ${notAnsweredCount} questions that are not answered or only marked for review. Are you sure you want to submit?`
+                : "You are about to submit the test. Are you sure?";
+            
+            showModal("Confirm Submission", message, 'confirm', (confirmed) => {
+                if (confirmed) {
+                    submitTest();
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
