@@ -660,6 +660,18 @@
             { id: 40, q: "On-board LED pin on UNO", 
               options: ["13", "10", "3", "A5"], 
               ans: "13" },
+
+            // Note: The correct answers are stored as strings. The comparison in submitTest will be case-insensitive and trim whitespace.
+            { id: 41, q: "Python: 5 + 3 ** 2 = ? (Enter the numerical result)", options: [], ans: "64" },
+            { id: 42, q: "Python: 10 // 3 = ? (Enter the numerical result)", options: [], ans: "3" },
+            { id: 43, q: "Python: 2 ** 3 % 3 = ? (Enter the numerical result)", options: [], ans: "8" },
+            { id: 44, q: "Python: 116 // 12 % 4 = ? (Enter the numerical result)", options: [], ans: "1" },
+            { id: 45, q: "Python: 95 % 20 / 2 = ? (Enter the numerical result)", options: [], ans: "7.5" },
+            { id: 46, q: "Python: -5 // 2 / 0 - 3= ? (Enter the numerical result)", options: [], ans: "1" },
+            { id: 47, q: "How many Acknowledgement bits would be there in 5 Packets? (Enter the numerical result)", options: [], ans: "40" },
+            { id: 48, q: "5 MB is how many KB (1 MB = 1024 KB)? (Enter the numerical result)", options: [], ans: "5120" },
+            { id: 49, q: "If relay ON = LED ON, input signal likely = ? (Enter the common logic high voltage in V, e.g., 3V or 5V)", options: [], ans: "5V" },
+            { id: 50, q: "Arduino reads 3 V on analog pin (0–5V range). Value = ?r (Enter the Answer as Integer)(Enter the corresponding 0–1023 value)", options: [], ans: "614" } 
         ];
 
 
@@ -1173,4 +1185,5 @@
     </script>
 </body>
 </html>
+
 
