@@ -751,54 +751,58 @@
         }
 
         // --- LOGIN LOGIC ---
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
-            
+        document.getElementById('loginForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+        
             const nameInput = document.getElementById('name');
             const rollNoInput = document.getElementById('rollNo');
             const messageBox = document.getElementById('messageBox');
             const button = document.getElementById('enterTestButton');
             const loginContainer = document.getElementById('login-container');
-
-            // Simple validation
+        
+            // ----- Validation -----
             if (nameInput.value.trim() === "" || rollNoInput.value.trim() === "") {
                 messageBox.classList.remove('hidden', 'bg-green-100', 'text-green-800');
                 messageBox.classList.add('bg-red-100', 'text-red-800');
                 messageBox.textContent = "Please fill in both your Full Name and Roll Number to proceed.";
                 return;
             }
-
-            // Disable button and show loading state
+        
+            // ----- Disable Button UI -----
             button.disabled = true;
             button.textContent = "Loading Test...";
             button.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
             button.classList.add('bg-gray-500', 'cursor-not-allowed');
-
-            // Simulate successful authentication and transition to test
+        
+            // ----- Delay for UX -----
             setTimeout(() => {
-                // 1. Hide Login UI
+        
+                // Hide Login Panel
                 loginContainer.classList.add('hidden');
-                
-                // 2. Request Full Screen Mode
-                requestFullScreen(); 
-                
-                // 3. Adjust body layout: remove centering/padding for full test display
+        
+                // Go Fullscreen
+                requestFullScreen();
+        
+                // Remove center styling used in login screen
                 document.body.classList.remove('flex', 'items-center', 'justify-center', 'p-4');
-
-                // 4. Show Test UI & Check Rotation
-                checkRotationAndPrompt(); 
-                
-                // 5. Initialize Test
+        
+                // Show test platform (initially)
+                testPlatformContainer.classList.remove('hidden');
+        
+                // Check rotation and hide if portrait in mobile
+                checkRotationAndPrompt();
+        
+                // Load first question + start timer
                 loadQuestion(currentQuestionIndex);
                 startTimer();
-                
-                // 6. Set up listeners for rotation/resize
+        
+                // Watch for rotation or resize
                 window.addEventListener('resize', checkRotationAndPrompt);
                 window.addEventListener('orientationchange', checkRotationAndPrompt);
-                
-            }, 1000); 
+        
+            }, 800);
         });
-
+        
 
         // --- CBT CORE FUNCTIONS ---
 
@@ -1185,6 +1189,7 @@
     </script>
 </body>
 </html>
+
 
 
 
