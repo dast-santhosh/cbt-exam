@@ -725,27 +725,15 @@
         }
         
         function checkRotationAndPrompt() {
-            // Check if the screen width is small (using the same breakpoint as CSS media query)
-            const isMobile = window.matchMedia("(max-width: 900px)").matches;
+                const isMobile = window.innerWidth < 900;
+                const isPortrait = window.innerHeight > window.innerWidth;
             
-            // Check for portrait orientation (height > width)
-            const isPortrait = window.innerHeight > window.innerWidth;
-
-            if (isMobile && isPortrait) {
-                // Device is mobile and in portrait -> show prompt and hide test
-                rotationPromptModal.style.display = 'flex';
-                testPlatformContainer.classList.add('hidden');
-            } else {
-                // Device is large or in landscape -> hide prompt and show test
-                rotationPromptModal.style.display = 'none';
-                
-                // Only show the test if we are actually in the test phase 
-                // (i.e., login is hidden and results are not visible)
-                const isTestActive = document.getElementById('login-container').classList.contains('hidden') && 
-                                     resultScreen.style.display !== 'block';
-                                     
-                if (isTestActive) {
-                    testPlatformContainer.classList.remove('hidden');
+                if (isMobile && isPortrait) {
+                    rotationPromptModal.style.display = 'flex';
+                    testPlatformContainer.classList.add('hidden');
+                } else {
+                    rotationPromptModal.style.display = 'none';
+                    testPlatformContainer.classList.remove('hidden'); // ✅ Force show back
                 }
             }
         }
@@ -1189,6 +1177,7 @@
     </script>
 </body>
 </html>
+
 
 
 
