@@ -500,167 +500,167 @@
         // --- CBT DATA (50 Questions) ---
         const quizQuestions = [
     // Section A (10 MCQs - 2 options)
-                { id: 1, q: "Robotics is mainly a combination of which fields?", 
-                  options: ["Mechanics, Electronics, and Control Theory", "Biology, Economics, and Advanced Optimization"], 
-                  ans: "Mechanics, Electronics, and Control Theory" },
-            
-                { id: 2, q: "Which statement is true?", 
-                  options: ["A robot executes pre-programmed or learned decision-making logic", "A robot's operation is dictated solely by random number generators"], 
-                  ans: "A robot executes pre-programmed or learned decision-making logic" },
-            
-                { id: 3, q: "Ethics in robotics mainly ensures", 
-                  options: ["Ensuring the safe, transparent, and non-malicious interaction with human agents", "Determining the economic feasibility of total human labor replacement"], 
-                  ans: "Ensuring the safe, transparent, and non-malicious interaction with human agents" },
-            
-                { id: 4, q: "Arduino Uno operates on", 
-                  options: ["5V (TTL/CMOS standard)", "12V (for higher current drive capabilities)"], 
-                  ans: "5V (TTL/CMOS standard)" },
-            
-                { id: 5, q: "RX pin is used for", 
-                  options: ["Serialization of inbound data frames (reception)", "De-serialization of outbound data frames (transmission)"], 
-                  ans: "Serialization of inbound data frames (reception)" },
-            
-                { id: 6, q: "An analog pin reads", 
-                  options: ["A continuous voltage potential range, quantized into discrete steps", "A purely binary state (V HIGH or V LOW)"], 
-                  ans: "A continuous voltage potential range, quantized into discrete steps" },
-            
-                { id: 7, q: "Python is", 
-                  options: ["A dynamically-typed, interpreted high-level abstraction language", "A statically-typed, compiled low-level hardware interface"], 
-                  ans: "A dynamically-typed, interpreted high-level abstraction language" },
-            
-                { id: 8, q: "LDR value decreases when", 
-                  options: ["Incident luminous flux intensity increases", "Incident luminous flux intensity decreases"], 
-                  ans: "Incident luminous flux intensity increases" },
-            
-                { id: 9, q: "A transistor can act as", 
-                  options: ["A controlled non-linear switching element or amplifier", "A purely passive voltage regulation and storage element"], 
-                  ans: "A controlled non-linear switching element or amplifier" },
-            
-                { id: 10, q: "Relay is used to", 
-                  options: ["Electromagnetically isolate & control high-power circuits using low-power signals", "Directly condition sensor outputs"], 
-                  ans: "Electromagnetically isolate & control high-power circuits using low-power signals" },
-            
-                // Section B (30 MCQs - 4 options)
-                { id: 11, q: "Arduino Uno is based on which MCU?", 
-                  options: ["ATmega328P with PicoPower technology", "ESP32-WROOM-32 (Wi-Fi)", "PIC16F877 RISC microcontroller", "STM32 ARM Cortex M3"], 
-                  ans: "ATmega328P with PicoPower technology" },
-            
-                { id: 12, q: "PWM pins on Arduino Uno", 
-                  options: ["Pins 3, 5, 6, 9, 10, 11 (Timer outputs)", "Pins D0–D2 (Serial)", "Pins A0–A5 (Analog Inputs)", "Pins 4, 7, 8, 12"], 
-                  ans: "Pins 3, 5, 6, 9, 10, 11 (Timer outputs)" },
-            
-                { id: 13, q: "Serial.begin(9600) means", 
-                  options: ["Configures UART for asynchronous comm @ 9600 baud", "Initializes the SPI bus clock frequency to 9.6 kHz", "Sets the PWM duty cycle to 96%", "Executes a non-blocking delay of 9.6 seconds"], 
-                  ans: "Configures UART for asynchronous comm @ 9600 baud" },
-            
-                { id: 14, q: "digitalWrite(LED_PIN, HIGH) means", 
-                  options: ["Apply Vcc to pin turning LED ON", "Enable the internal pull-up resistor", "Starts PWM modulation with 100% duty cycle", "Reads the current voltage level of the pin"], 
-                  ans: "Apply Vcc to pin turning LED ON" },
-            
-                { id: 15, q: "LDR stands for", 
-                  options: ["Light Dependent Resistor", "Linear Digital Regulator", "Laser Detection Receiver", "Load Distribution Relay"], 
-                  ans: "Light Dependent Resistor" },
-            
-                { id: 16, q: "Analog range in Arduino Uno (10-bit ADC)", 
-                  options: ["0–1023 (10-bit resolution)", "0–255 (8-bit resolution)", "0–5 (voltage reference)", "−511 to +512 (signed 10-bit)"], 
-                  ans: "0–1023 (10-bit resolution)" },
-            
-                { id: 17, q: "Which converts AC to DC?", 
-                  options: ["Semiconductor diode (rectification)", "Electrolytic capacitor (smoothing)", "Resistor divider network", "Inductor choke (filtering)"], 
-                  ans: "Semiconductor diode (rectification)" },
-            
-                { id: 18, q: "EEPROM in Arduino stores", 
-                  options: ["Non-volatile configuration ROM data", "Temporary runtime SRAM variables", "Bootloader firmware instructions", "Internal CPU register values"], 
-                  ans: "Non-volatile configuration ROM data" },
-            
-                { id: 19, q: "Which communication does I2C use?", 
-                  options: ["SDA & SCL (Data & Clock lines)", "RX/TX (Asynchronous Serial)", "MOSI/MISO (Synchronous SPI)", "EN/RS (LCD Control)"], 
-                  ans: "SDA & SCL (Data & Clock lines)" },
-            
-                { id: 20, q: "Relay input signal normally", 
-                  options: ["5V MCU logic", "230V AC mains", "12V DC power supply", "Analog control line"], 
-                  ans: "5V MCU logic" },
-            
-                { id: 21, q: "Infrared sensor primarily detects", 
-                  options: ["Reflected IR intensity", "Ambient heat radiation (thermopile)", "Acoustic vibration (Doppler)", "UV pattern reflection"], 
-                  ans: "Reflected IR intensity" },
-            
-                { id: 22, q: "Serial.print() does", 
-                  options: ["Prints without appending a newline character ('\\n')", "Prints and then appends a newline character ('\\n')", "Initiates the serial communication link", "Clears the serial buffer"], 
-                  ans: "Prints without appending a newline character ('\\n')" },
-            
-                { id: 23, q: "Python list is enclosed in", 
-                  options: ["[] (Square brackets - mutable sequence)", "{} (Curly braces - dictionary or set)", "() (Parentheses - tuple)", "<> (Angular brackets)"], 
-                  ans: "[] (Square brackets - mutable sequence)" },
-            
-                { id: 24, q: "Python string example", 
-                  options: ["\"Hello\"", "100 (Integer)", "True (Boolean)", "3.14 (Float)"], 
-                  ans: "\"Hello\"" },
-            
-                { id: 25, q: "Arduino default clock frequency", 
-                  options: ["16 MHz (External Crystal)", "8 MHz (Internal RC Oscillator)", "1 GHz (Standard PC Clock)", "100 kHz (I2C Standard Rate)"], 
-                  ans: "16 MHz (External Crystal)" },
-            
-                { id: 26, q: "LDR sensor type", 
-                  options: ["Analog (resistance changes based on light intensity)", "Digital (High/Low output only)", "Capacitive sensor (Proximity)", "Ultrasonic echo module"], 
-                  ans: "Analog (resistance changes based on light intensity)" },
-            
-                { id: 27, q: "Material commonly used in resistors", 
-                  options: ["Carbon film/metal oxide film", "Copper trace/wire", "Plastic polymer insulator", "Gold plated connector"], 
-                  ans: "Carbon film/metal oxide film" },
-            
-                { id: 28, q: "Motor driver IC example", 
-                  options: ["L298N (H-Bridge Driver)", "7805 (Voltage Regulator)", "LM358 (Op-Amp)", "NE555 (Timer IC)"], 
-                  ans: "L298N (H-Bridge Driver)" },
-            
-                { id: 29, q: "Relay types", 
-                  options: ["SPDT & DPDT (Single/Double Pole, Double Throw)", "NPN & PNP (Transistor Types)", "AC & DC (Power Types)", "Series & Shunt (Circuit Configurations)"], 
-                  ans: "SPDT & DPDT (Single/Double Pole, Double Throw)" },
-            
-                { id: 30, q: "Which language Arduino uses?", 
-                  options: ["C/C++ with Wiring framework", "Java & Kotlin", "Python derivative (MicroPython)", "Assembly Language only"], 
-                  ans: "C/C++ with Wiring framework" },
-            
-                { id: 31, q: "analogRead(A0) returns", 
-                  options: ["0–1023 (Raw ADC value)", "0–5 (Scaled voltage value)", "1 or 0 (Digital state)", "True/False (Boolean value)"], 
-                  ans: "0–1023 (Raw ADC value)" },
-            
-                { id: 32, q: "Python integer example", 
-                  options: ["25", "\"25\" (String)", "2.5 (Float)", "[25] (List)"], 
-                  ans: "25" },
-            
-                { id: 33, q: "TX pin used for", 
-                  options: ["Transmitting serial data (Transmission)", "Temperature sensing", "Time delay calculation", "PWM/DAC output"], 
-                  ans: "Transmitting serial data (Transmission)" },
-            
-                { id: 34, q: "// operator in Python", 
-                  options: ["Floor division (Truncates to integer)", "Normal float division", "Modulus (Remainder)", "Exponentiation (Power)"], 
-                  ans: "Floor division (Truncates to integer)" },
-            
-                { id: 35, q: "ESP32 has", 
-                  options: ["2.4GHz Wi-Fi + Bluetooth/BLE", "LoRa only", "Ethernet only", "No wireless connectivity"], 
-                  ans: "2.4GHz Wi-Fi + Bluetooth/BLE" },
-            
-                { id: 36, q: "IR sensor mainly works based on", 
-                  options: ["Infrared light reflection (Phototransistor)", "Sound Doppler effect", "Passive thermal radiation (PIR)", "Magnetic induction"], 
-                  ans: "Infrared light reflection (Phototransistor)" },
-            
-                { id: 37, q: "Analog output pin in Arduino", 
-                  options: ["PWM pins (3,5,6,9,10,11)", "Analog Input pins (A0–A5)", "Digital pins (D2–D12)", "VIN (Input Voltage)"], 
-                  ans: "PWM pins (3,5,6,9,10,11)" },
-            
-                { id: 38, q: "Data capacity smallest to biggest", 
-                  options: ["KB < MB < GB < TB", "MB < KB < GB < TB", "GB < MB < KB < TB", "TB < GB < MB < KB"], 
-                  ans: "KB < MB < GB < TB" },
-            
-                { id: 39, q: "Microcontroller memory types", 
-                  options: ["Flash, SRAM, EEPROM", "ROM, HDD, GPU", "SSD, RAM, HDD", "EPROM, PROM, VRAM"], 
-                  ans: "Flash, SRAM, EEPROM" },
-            
-                { id: 40, q: "On-board LED pin in UNO", 
-                  options: ["Digital Pin 13", "Analog Pin A5", "Digital Pin 10", "Digital Pin 3 (PWM)"], 
-                  ans: "Digital Pin 13" },
-            ];
+            { id: 1, q: "Robotics is mainly a combination of which fields?", 
+              options: ["Mechanics, Electronics, and Control Theory", "Biology, Economics, and Advanced Optimization"], 
+              ans: "Mechanics, Electronics, and Control Theory" },
+        
+            { id: 2, q: "Which statement is true?", 
+              options: ["A robot executes pre-programmed or learned decision-making logic", "A robot's operation is dictated solely by random number generators"], 
+              ans: "A robot executes pre-programmed or learned decision-making logic" },
+        
+            { id: 3, q: "Ethics in robotics mainly ensures", 
+              options: ["Ensuring the safe, transparent, and non-malicious interaction with human agents", "Determining the economic feasibility of total human labor replacement"], 
+              ans: "Ensuring the safe, transparent, and non-malicious interaction with human agents" },
+        
+            { id: 4, q: "Arduino Uno operates on", 
+              options: ["5V (TTL/CMOS standard)", "12V (for higher current drive capabilities)"], 
+              ans: "5V (TTL/CMOS standard)" },
+        
+            { id: 5, q: "RX pin is used for", 
+              options: ["Serialization of inbound data frames (reception)", "De-serialization of outbound data frames (transmission)"], 
+              ans: "Serialization of inbound data frames (reception)" },
+        
+            { id: 6, q: "An analog pin reads", 
+              options: ["A continuous voltage potential range, quantized into discrete steps", "A purely binary state (V HIGH or V LOW)"], 
+              ans: "A continuous voltage potential range, quantized into discrete steps" },
+        
+            { id: 7, q: "Python is", 
+              options: ["A dynamically-typed, interpreted high-level abstraction language", "A statically-typed, compiled low-level hardware interface"], 
+              ans: "A dynamically-typed, interpreted high-level abstraction language" },
+        
+            { id: 8, q: "LDR value decreases when", 
+              options: ["Incident luminous flux intensity increases", "Incident luminous flux intensity decreases"], 
+              ans: "Incident luminous flux intensity increases" },
+        
+            { id: 9, q: "A transistor can act as", 
+              options: ["A controlled non-linear switching element or amplifier", "A purely passive voltage regulation and storage element"], 
+              ans: "A controlled non-linear switching element or amplifier" },
+        
+            { id: 10, q: "Relay is used to", 
+              options: ["Electromagnetically isolate & control high-power circuits using low-power signals", "Directly condition sensor outputs"], 
+              ans: "Electromagnetically isolate & control high-power circuits using low-power signals" },
+        
+            // Section B (30 MCQs - 4 options)
+            { id: 11, q: "Arduino Uno is based on which MCU?", 
+              options: ["ATmega328P with PicoPower technology", "ESP32-WROOM-32 (Wi-Fi)", "PIC16F877 RISC microcontroller", "STM32 ARM Cortex M3"], 
+              ans: "ATmega328P with PicoPower technology" },
+        
+            { id: 12, q: "PWM pins on Arduino Uno", 
+              options: ["Pins 3, 5, 6, 9, 10, 11 (Timer outputs)", "Pins D0–D2 (Serial)", "Pins A0–A5 (Analog Inputs)", "Pins 4, 7, 8, 12"], 
+              ans: "Pins 3, 5, 6, 9, 10, 11 (Timer outputs)" },
+        
+            { id: 13, q: "Serial.begin(9600) means", 
+              options: ["Configures UART for asynchronous comm @ 9600 baud", "Initializes the SPI bus clock frequency to 9.6 kHz", "Sets the PWM duty cycle to 96%", "Executes a non-blocking delay of 9.6 seconds"], 
+              ans: "Configures UART for asynchronous comm @ 9600 baud" },
+        
+            { id: 14, q: "digitalWrite(LED_PIN, HIGH) means", 
+              options: ["Apply Vcc to pin turning LED ON", "Enable the internal pull-up resistor", "Starts PWM modulation with 100% duty cycle", "Reads the current voltage level of the pin"], 
+              ans: "Apply Vcc to pin turning LED ON" },
+        
+            { id: 15, q: "LDR stands for", 
+              options: ["Light Dependent Resistor", "Linear Digital Regulator", "Laser Detection Receiver", "Load Distribution Relay"], 
+              ans: "Light Dependent Resistor" },
+        
+            { id: 16, q: "Analog range in Arduino Uno (10-bit ADC)", 
+              options: ["0–1023 (10-bit resolution)", "0–255 (8-bit resolution)", "0–5 (voltage reference)", "−511 to +512 (signed 10-bit)"], 
+              ans: "0–1023 (10-bit resolution)" },
+        
+            { id: 17, q: "Which converts AC to DC?", 
+              options: ["Semiconductor diode (rectification)", "Electrolytic capacitor (smoothing)", "Resistor divider network", "Inductor choke (filtering)"], 
+              ans: "Semiconductor diode (rectification)" },
+        
+            { id: 18, q: "EEPROM in Arduino stores", 
+              options: ["Non-volatile configuration ROM data", "Temporary runtime SRAM variables", "Bootloader firmware instructions", "Internal CPU register values"], 
+              ans: "Non-volatile configuration ROM data" },
+        
+            { id: 19, q: "Which communication does I2C use?", 
+              options: ["SDA & SCL (Data & Clock lines)", "RX/TX (Asynchronous Serial)", "MOSI/MISO (Synchronous SPI)", "EN/RS (LCD Control)"], 
+              ans: "SDA & SCL (Data & Clock lines)" },
+        
+            { id: 20, q: "Relay input signal normally", 
+              options: ["5V MCU logic", "230V AC mains", "12V DC power supply", "Analog control line"], 
+              ans: "5V MCU logic" },
+        
+            { id: 21, q: "Infrared sensor primarily detects", 
+              options: ["Reflected IR intensity", "Ambient heat radiation (thermopile)", "Acoustic vibration (Doppler)", "UV pattern reflection"], 
+              ans: "Reflected IR intensity" },
+        
+            { id: 22, q: "Serial.print() does", 
+              options: ["Prints without appending a newline character ('\\n')", "Prints and then appends a newline character ('\\n')", "Initiates the serial communication link", "Clears the serial buffer"], 
+              ans: "Prints without appending a newline character ('\\n')" },
+        
+            { id: 23, q: "Python list is enclosed in", 
+              options: ["[] (Square brackets - mutable sequence)", "{} (Curly braces - dictionary or set)", "() (Parentheses - tuple)", "<> (Angular brackets)"], 
+              ans: "[] (Square brackets - mutable sequence)" },
+        
+            { id: 24, q: "Python string example", 
+              options: ["\"Hello\"", "100 (Integer)", "True (Boolean)", "3.14 (Float)"], 
+              ans: "\"Hello\"" },
+        
+            { id: 25, q: "Arduino default clock frequency", 
+              options: ["16 MHz (External Crystal)", "8 MHz (Internal RC Oscillator)", "1 GHz (Standard PC Clock)", "100 kHz (I2C Standard Rate)"], 
+              ans: "16 MHz (External Crystal)" },
+        
+            { id: 26, q: "LDR sensor type", 
+              options: ["Analog (resistance changes based on light intensity)", "Digital (High/Low output only)", "Capacitive sensor (Proximity)", "Ultrasonic echo module"], 
+              ans: "Analog (resistance changes based on light intensity)" },
+        
+            { id: 27, q: "Material commonly used in resistors", 
+              options: ["Carbon film/metal oxide film", "Copper trace/wire", "Plastic polymer insulator", "Gold plated connector"], 
+              ans: "Carbon film/metal oxide film" },
+        
+            { id: 28, q: "Motor driver IC example", 
+              options: ["L298N (H-Bridge Driver)", "7805 (Voltage Regulator)", "LM358 (Op-Amp)", "NE555 (Timer IC)"], 
+              ans: "L298N (H-Bridge Driver)" },
+        
+            { id: 29, q: "Relay types", 
+              options: ["SPDT & DPDT (Single/Double Pole, Double Throw)", "NPN & PNP (Transistor Types)", "AC & DC (Power Types)", "Series & Shunt (Circuit Configurations)"], 
+              ans: "SPDT & DPDT (Single/Double Pole, Double Throw)" },
+        
+            { id: 30, q: "Which language Arduino uses?", 
+              options: ["C/C++ with Wiring framework", "Java & Kotlin", "Python derivative (MicroPython)", "Assembly Language only"], 
+              ans: "C/C++ with Wiring framework" },
+        
+            { id: 31, q: "analogRead(A0) returns", 
+              options: ["0–1023 (Raw ADC value)", "0–5 (Scaled voltage value)", "1 or 0 (Digital state)", "True/False (Boolean value)"], 
+              ans: "0–1023 (Raw ADC value)" },
+        
+            { id: 32, q: "Python integer example", 
+              options: ["25", "\"25\" (String)", "2.5 (Float)", "[25] (List)"], 
+              ans: "25" },
+        
+            { id: 33, q: "TX pin used for", 
+              options: ["Transmitting serial data (Transmission)", "Temperature sensing", "Time delay calculation", "PWM/DAC output"], 
+              ans: "Transmitting serial data (Transmission)" },
+        
+            { id: 34, q: "// operator in Python", 
+              options: ["Floor division (Truncates to integer)", "Normal float division", "Modulus (Remainder)", "Exponentiation (Power)"], 
+              ans: "Floor division (Truncates to integer)" },
+        
+            { id: 35, q: "ESP32 has", 
+              options: ["2.4GHz Wi-Fi + Bluetooth/BLE", "LoRa only", "Ethernet only", "No wireless connectivity"], 
+              ans: "2.4GHz Wi-Fi + Bluetooth/BLE" },
+        
+            { id: 36, q: "IR sensor mainly works based on", 
+              options: ["Infrared light reflection (Phototransistor)", "Sound Doppler effect", "Passive thermal radiation (PIR)", "Magnetic induction"], 
+              ans: "Infrared light reflection (Phototransistor)" },
+        
+            { id: 37, q: "Analog output pin in Arduino", 
+              options: ["PWM pins (3,5,6,9,10,11)", "Analog Input pins (A0–A5)", "Digital pins (D2–D12)", "VIN (Input Voltage)"], 
+              ans: "PWM pins (3,5,6,9,10,11)" },
+        
+            { id: 38, q: "Data capacity smallest to biggest", 
+              options: ["KB < MB < GB < TB", "MB < KB < GB < TB", "GB < MB < KB < TB", "TB < GB < MB < KB"], 
+              ans: "KB < MB < GB < TB" },
+        
+            { id: 39, q: "Microcontroller memory types", 
+              options: ["Flash, SRAM, EEPROM", "ROM, HDD, GPU", "SSD, RAM, HDD", "EPROM, PROM, VRAM"], 
+              ans: "Flash, SRAM, EEPROM" },
+        
+            { id: 40, q: "On-board LED pin in UNO", 
+              options: ["Digital Pin 13", "Analog Pin A5", "Digital Pin 10", "Digital Pin 3 (PWM)"], 
+              ans: "Digital Pin 13" },
+
 
             // Section C (10 Numerical/Programming Questions - Free Text Input)
             // Note: The correct answers are stored as strings. The comparison in submitTest will be case-insensitive and trim whitespace.
@@ -1186,4 +1186,5 @@
     </script>
 </body>
 </html>
+
 
