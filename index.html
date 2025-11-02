@@ -215,7 +215,7 @@
             font-size: 1em;
             cursor: pointer;
             border: none;
-            border-radius: 6px;
+            border-radius: 6mm;
             margin: 0 5px;
             font-weight: 600;
             transition: background-color 0.2s, transform 0.1s;
@@ -278,6 +278,35 @@
             max-width: 400px;
             width: 90%;
         }
+        
+        /* NEW: Rotation Prompt Modal Styles */
+        .rotation-prompt-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            color: white;
+            display: none; /* Controlled by JS */
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; 
+            flex-direction: column;
+            text-align: center;
+        }
+        .rotation-prompt-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            /* Simple animation to suggest rotation */
+            animation: rotate-icon 1.5s infinite alternate;
+        }
+
+        @keyframes rotate-icon {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(10deg); }
+        }
+
 
         /* Responsive Design */
         @media (max-width: 900px) {
@@ -457,6 +486,14 @@
             </div>
         </div>
     </div>
+    
+    <!-- NEW: Rotation Prompt Modal (Hidden by default, z-index 2000 to cover everything) -->
+    <div id="rotation-prompt-modal" class="rotation-prompt-modal">
+        <div class="rotation-prompt-icon">📱 🔄</div>
+        <h3 class="text-3xl font-bold mb-4">Please Rotate Your Device</h3>
+        <p class="text-xl">For the best experience, this exam requires **Landscape Mode** on small screens.</p>
+        <p class="text-md mt-4 text-gray-400">The test will resume automatically once rotated.</p>
+    </div>
 
 
     <script>
@@ -543,6 +580,8 @@
         const resultScreen = document.getElementById('result-screen');
         const modal = document.getElementById('custom-modal');
         const testPlatformContainer = document.getElementById('test-platform-container');
+        const rotationPromptModal = document.getElementById('rotation-prompt-modal');
+
 
         // Modal references
         const modalTitle = document.getElementById('modal-title');
@@ -553,6 +592,45 @@
         
         const TEXT_INPUT_START_INDEX = 40; // Question 41 is index 40
 
+
+        // --- NEW: FULLSCREEN & ROTATION LOGIC ---
+        function requestFullScreen(element = document.documentElement) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) { /* Firefox */
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) { /* IE/Edge */
+                element.msRequestFullscreen();
+            }
+        }
+        
+        function checkRotationAndPrompt() {
+            // Check if the screen width is small (using the same breakpoint as CSS media query)
+            const isMobile = window.matchMedia("(max-width: 900px)").matches;
+            
+            // Check for portrait orientation (height > width)
+            const isPortrait = window.innerHeight > window.innerWidth;
+
+            if (isMobile && isPortrait) {
+                // Device is mobile and in portrait -> show prompt and hide test
+                rotationPromptModal.style.display = 'flex';
+                testPlatformContainer.classList.add('hidden');
+            } else {
+                // Device is large or in landscape -> hide prompt and show test
+                rotationPromptModal.style.display = 'none';
+                
+                // Only show the test if we are actually in the test phase 
+                // (i.e., login is hidden and results are not visible)
+                const isTestActive = document.getElementById('login-container').classList.contains('hidden') && 
+                                     resultScreen.style.display !== 'block';
+                                     
+                if (isTestActive) {
+                    testPlatformContainer.classList.remove('hidden');
+                }
+            }
+        }
 
         // --- LOGIN LOGIC ---
         document.getElementById('loginForm').addEventListener('submit', function(event) {
@@ -583,15 +661,23 @@
                 // 1. Hide Login UI
                 loginContainer.classList.add('hidden');
                 
-                // 2. Adjust body layout: remove centering/padding for full test display
+                // 2. Request Full Screen Mode
+                requestFullScreen(); 
+                
+                // 3. Adjust body layout: remove centering/padding for full test display
                 document.body.classList.remove('flex', 'items-center', 'justify-center', 'p-4');
 
-                // 3. Show Test UI
-                testPlatformContainer.classList.remove('hidden');
+                // 4. Show Test UI & Check Rotation
+                checkRotationAndPrompt(); 
                 
-                // 4. Initialize Test
+                // 5. Initialize Test
                 loadQuestion(currentQuestionIndex);
                 startTimer();
+                
+                // 6. Set up listeners for rotation/resize
+                window.addEventListener('resize', checkRotationAndPrompt);
+                window.addEventListener('orientationchange', checkRotationAndPrompt);
+                
             }, 1000); 
         });
 
@@ -869,15 +955,27 @@
                 }
             }
             
-            // 1. Hide the entire Test Platform Container
+            // 1. Exit Full Screen Mode
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { /* Firefox */
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE/Edge */
+                document.msExitFullscreen();
+            }
+
+            // 2. Hide the entire Test Platform Container and the rotation prompt
             testPlatformContainer.classList.add('hidden');
-            
-            // 2. Set body back to centering mode for result screen
+            rotationPromptModal.style.display = 'none';
+
+            // 3. Set body back to centering mode for result screen
             document.body.classList.add('flex', 'items-center', 'justify-center', 'p-4');
             document.body.style.backgroundColor = '#f3f4f6';
 
 
-            // 3. Show Result Screen (which is now a sibling element)
+            // 4. Show Result Screen (which is now a sibling element)
             resultScreen.style.display = 'block';
             
             const studentName = document.getElementById('name').value;
